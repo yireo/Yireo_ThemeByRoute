@@ -1,0 +1,20 @@
+{
+  "name": "yireo/magento2-theme-by-route",
+  "version": "1.0.0",
+  "description": "Assign a specific theme to specific routes",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "^103.0"
+  },
+  "license": [
+    "OSL-3.0"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Yireo\\ThemeByRoute\\": ""
+    }
+  }
+}
