@@ -1,9 +1,15 @@
 {
-    "sequence": [],
-    "modules": [],
+    "sequence": [
+        "Magento_Store",
+        "Magento_Theme"
+    ],
+    "modules": [
+        "Magento_Csp",
+        "Magento_Directory",
+        "Magento_Store",
+        "Magento_Theme"
+    ],
     "components": [],
     "config": [],
-    "tests": [],
-    "phpcs_severity": "8",
-    "phpstan_level": "1"
+    "tests": []
 }
