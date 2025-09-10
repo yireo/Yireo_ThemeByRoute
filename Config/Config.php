@@ -11,7 +11,7 @@ use Throwable;
 
 class Config
 {
-    private const CONFIG_PATH = 'app/etc/theme.json';
+    private const CONFIG_PATH = 'app/etc/theme-by-route.json';
 
     public function __construct(
         private readonly File $file,
