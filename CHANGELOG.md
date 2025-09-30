@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 30 September 2025
+### Fixed
+- Also do a direct match on URLs
+
 ## [1.0.1] - 10 September 2025
 ### Fixed
 - Change JSON filename to app/etc/theme-by-route.json

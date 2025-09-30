@@ -1,6 +1,6 @@
 {
   "name": "yireo/magento2-theme-by-route",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Assign a specific theme to specific routes",
   "type": "magento2-module",
   "require": {
