@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Yireo\ThemeByRoute\Observer;
 
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
@@ -15,7 +16,7 @@ use Yireo\ThemeByRoute\Config\Config;
 class ApplyThemeByRoute implements ObserverInterface
 {
     public function __construct(
-        private readonly RequestInterface $request,
+        private readonly Http $request,
         private readonly DesignInterface $design,
         private readonly ThemeProvider $themeProvider,
         private readonly Config $config,
@@ -47,6 +48,7 @@ class ApplyThemeByRoute implements ObserverInterface
     {
         $currentRouteName = (string)$this->request->getRouteName();
         $fullAction = (string)$this->request->getFullActionName();
+        $requestUri = trim(preg_replace('/\?(.*)/', '', $this->request->getRequestUri()),'/');
 
         foreach ($routes as $route) {
             $route = trim((string)$route);
@@ -58,7 +60,7 @@ class ApplyThemeByRoute implements ObserverInterface
             $asFullAction = str_replace('/', '_', $route);
             $isFullActionMatch = strcasecmp($asFullAction, $fullAction) === 0;
 
-            if (false === $isRouteMatch && false === $isFullActionMatch) {
+            if (false === $isRouteMatch && false === $isFullActionMatch && false === $requestUri) {
                 continue;
             }
 
