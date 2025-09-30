@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 30 September 2025
+### Fixed
+- Fix matching of request URI
+
 ## [1.0.2] - 30 September 2025
 ### Fixed
 - Also do a direct match on URLs
