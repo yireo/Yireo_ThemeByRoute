@@ -59,8 +59,9 @@ class ApplyThemeByRoute implements ObserverInterface
             $isRouteMatch = (strpos($route, '/') === false) && strcasecmp($route, $currentRouteName) === 0;
             $asFullAction = str_replace('/', '_', $route);
             $isFullActionMatch = strcasecmp($asFullAction, $fullAction) === 0;
+            $isRequestUriMatch = $requestUri === $route;
 
-            if (false === $isRouteMatch && false === $isFullActionMatch && false === $requestUri) {
+            if (false === $isRouteMatch && false === $isFullActionMatch && false === $isRequestUriMatch) {
                 continue;
             }
 
