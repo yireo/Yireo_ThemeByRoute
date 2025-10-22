@@ -10,6 +10,7 @@ bin/magento module:enable Yireo_ThemeByRoute
 
 ## Configuration
 Create a file `app/etc/theme-by-route.json` similar to the following:
+
 ```json
 {
   "Loki/luma": [
@@ -18,3 +19,20 @@ Create a file `app/etc/theme-by-route.json` similar to the following:
 }
 ```
 
+Now, the `Loki/luma` theme is applied to all pages.
+
+If you want to control under which circumstances which theme is applied, there is an advanced syntax as well:
+
+
+```json
+[
+  {
+    "scope_type": "website",
+    "scope_code": "default",
+    "theme": "Loki/luma",
+    "pages": [
+      "cms/index/index"
+    ]
+  }
+]
+```
