@@ -26,6 +26,10 @@ class ApplyThemeByRoute implements ObserverInterface
 
     public function execute(Observer $observer): void
     {
+        if (false === $this->config->isEnabled()) {
+            return;
+        }
+
         $map = $this->config->getMap();
         if (empty($map)) {
             return;

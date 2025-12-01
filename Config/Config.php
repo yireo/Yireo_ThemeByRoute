@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Yireo\ThemeByRoute\Config;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
@@ -15,12 +16,18 @@ class Config
     private const CONFIG_PATH = 'app/etc/theme-by-route.json';
 
     public function __construct(
+        private readonly ScopeConfigInterface $scopeConfig,
         private readonly File $file,
         private readonly JsonSerializer $json,
         private readonly LoggerInterface $logger,
         private readonly DirectoryList $directoryList,
         private readonly StoreManagerInterface $storeManager,
     ) {
+    }
+
+    public function isEnabled(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('system/yireo_themebyroute/enabled');
     }
 
     public function getMap(): array
