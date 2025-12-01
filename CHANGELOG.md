@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 01 December 2025
+### Fixed
+- Add enabled config option
+
 ## [1.1.1] - 22 October 2025
 ### Fixed
 - Allow psr/log 1 and 2 besides 3
