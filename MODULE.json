@@ -11,5 +11,7 @@
     ],
     "components": [],
     "config": [],
-    "tests": []
+    "tests": [],
+    "module_name": "Yireo_ThemeByRoute",
+    "composer_name": "yireo/magento2-theme-by-route"
 }
