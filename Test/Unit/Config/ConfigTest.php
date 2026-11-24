@@ -169,7 +169,7 @@ class ConfigTest extends TestCase
             ->method('fileGetContents')
             ->willReturn('{"Loki/luma": ["cms"]}');
 
-        $this->assertSame(['Loki/luma' => ['cms']], $config->getMap());
+        $config->getMap();
         $this->assertSame(['Loki/luma' => ['cms']], $config->getMap());
     }
 

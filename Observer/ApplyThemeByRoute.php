@@ -73,7 +73,7 @@ class ApplyThemeByRoute implements ObserverInterface
     private function applyTheme(string $themeCode): void
     {
         $theme = $this->themeProvider->getThemeByFullPath(Area::AREA_FRONTEND.'/'.$themeCode);
-        if ($theme && $theme->getId()) {
+        if ($theme->getId()) {
             $this->design->setDesignTheme($theme, Area::AREA_FRONTEND);
         }
     }
