@@ -13,5 +13,7 @@
     "config": [],
     "tests": [],
     "module_name": "Yireo_ThemeByRoute",
-    "composer_name": "yireo/magento2-theme-by-route"
+    "composer_name": "yireo/magento2-theme-by-route",
+    "phpcs_severity": "6",
+    "phpstan_level": "3"
 }
