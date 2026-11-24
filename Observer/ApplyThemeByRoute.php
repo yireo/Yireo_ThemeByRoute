@@ -3,20 +3,19 @@ declare(strict_types=1);
 
 namespace Yireo\ThemeByRoute\Observer;
 
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Psr\Log\LoggerInterface;
-use Magento\Framework\App\Area;
-use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\DesignInterface;
 use Magento\Theme\Model\Theme\ThemeProvider;
+use Psr\Log\LoggerInterface;
+use Throwable;
 use Yireo\ThemeByRoute\Config\Config;
 
 class ApplyThemeByRoute implements ObserverInterface
 {
     public function __construct(
-        private readonly Http $request,
         private readonly DesignInterface $design,
         private readonly ThemeProvider $themeProvider,
         private readonly Config $config,
@@ -26,50 +25,46 @@ class ApplyThemeByRoute implements ObserverInterface
 
     public function execute(Observer $observer): void
     {
-        if (false === $this->config->isEnabled()) {
-            return;
-        }
-
-        $map = $this->config->getMap();
-        if (empty($map)) {
-            return;
-        }
-
-        foreach ($map as $themeCode => $routes) {
-            if (false === is_array($routes) || empty($routes)) {
-                continue;
+        try {
+            $request = $observer->getEvent()->getData('request');
+            if (!$request instanceof Http || false === $this->config->isEnabled()) {
+                return;
             }
 
-            if (false === $this->applyThemeRoutes($themeCode, $routes)) {
-                continue;
+            foreach ($this->config->getMap() as $themeCode => $routes) {
+                if ($this->matchesRoutes($request, $routes)) {
+                    $this->applyTheme((string)$themeCode);
+                    return;
+                }
             }
-
-            $this->applyTheme($themeCode);
+        } catch (Throwable $e) {
+            $this->logger->error('[Yireo_ThemeByRoute] Failed to apply theme by route: '.$e->getMessage());
         }
     }
 
-    private function applyThemeRoutes(string $themeCode, array $routes): bool
+    private function matchesRoutes(Http $request, array $routes): bool
     {
-        $currentRouteName = (string)$this->request->getRouteName();
-        $fullAction = (string)$this->request->getFullActionName();
-        $requestUri = trim(preg_replace('/\?(.*)/', '', $this->request->getRequestUri()),'/');
+        $currentRouteName = (string)$request->getRouteName();
+        $fullAction = (string)$request->getFullActionName();
+        $requestUri = trim(explode('?', (string)$request->getRequestUri(), 2)[0], '/');
 
         foreach ($routes as $route) {
-            $route = trim((string)$route);
+            $route = trim((string)$route, " \f\n\r\t\v\x00");
             if ($route === '') {
                 continue;
             }
 
-            $isRouteMatch = (strpos($route, '/') === false) && strcasecmp($route, $currentRouteName) === 0;
-            $asFullAction = str_replace('/', '_', $route);
-            $isFullActionMatch = strcasecmp($asFullAction, $fullAction) === 0;
-            $isRequestUriMatch = $requestUri === $route;
-
-            if (false === $isRouteMatch && false === $isFullActionMatch && false === $isRequestUriMatch) {
-                continue;
+            if (!str_contains($route, '/') && strcasecmp($route, $currentRouteName) === 0) {
+                return true;
             }
 
-            return true;
+            if (strcasecmp(str_replace('/', '_', $route), $fullAction) === 0) {
+                return true;
+            }
+
+            if ($requestUri === $route) {
+                return true;
+            }
         }
 
         return false;
@@ -77,15 +72,9 @@ class ApplyThemeByRoute implements ObserverInterface
 
     private function applyTheme(string $themeCode): void
     {
-        try {
-            $theme = $this->themeProvider->getThemeByFullPath('frontend/'.$themeCode);
-            if ($theme && $theme->getId()) {
-                $this->design->setDesignTheme($theme, Area::AREA_FRONTEND);
-            }
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                '[Yireo_ThemeByRoute] Failed to set theme "'.$themeCode.'": '.$e->getMessage()
-            );
+        $theme = $this->themeProvider->getThemeByFullPath(Area::AREA_FRONTEND.'/'.$themeCode);
+        if ($theme && $theme->getId()) {
+            $this->design->setDesignTheme($theme, Area::AREA_FRONTEND);
         }
     }
 }
