@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3] - 26 November 2026
+### Fixed
+- Fix TypeError on every frontend request when the advanced config has no matching website, group or store
+- Validate the theme map: theme codes must look like Vendor/theme and only string pages are kept
+- Make the enabled flag work at website and store scope, not only default scope
+- Never break the storefront: errors are logged instead of thrown
+- Only apply the first matching theme
+- Strip the query string reliably when matching the request URI
+
+### Changed
+- Drop PHP 8.1 support, add PHP 8.5 support
+- Declare Magento_Backend and Magento_Config as module dependencies
+
 ## [1.1.2] - 01 December 2025
 ### Fixed
 - Add enabled config option
